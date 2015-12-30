@@ -3,11 +3,14 @@ package anca.cameraexample3;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity {
   private Camera mCamera;
   private CameraPreview mPreview;
+  private PictureCallback mPicture = new PictureCallback();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,17 @@ public class MainActivity extends AppCompatActivity {
     mPreview = new CameraPreview(this, mCamera);
     FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
     preview.addView(mPreview);
+
+    // Add a listener to the Capture button
+    Button captureButton = (Button) findViewById(R.id.button_capture);
+    captureButton.setOnClickListener(
+      new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          // get an image from the camera
+          mCamera.takePicture(null, null, mPicture);
+        }
+      });
   }
 
   @Override
